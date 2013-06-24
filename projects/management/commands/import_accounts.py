@@ -16,6 +16,7 @@ class Command(BaseCommand):
 
         self.update_subjects()
         self.update_projects()
+        self.update_project_members()
         self.update_usage(args[0])
 
     def update_subjects(self):
@@ -36,15 +37,33 @@ class Command(BaseCommand):
             try:
                 lead = Subject.objects().get(email=row['email'])
             except Subject.DoesNotExist:
-                self.stdout.write('WARNING: Could not proces "%s", user "%s" does not exist.'%(row['project_id'], row['email']))
+                self.stdout.write('WARNING: Could not proces "%s", user "%s" does not exist.'%(row['project_code'], row['email']))
                 continue
-            proj, created = Project.objects.get_or_create(account=row['project_id'])
+            proj, created = Project.objects.get_or_create(account=row['project_code'])
             proj.leader = lead
             proj.name = row['project_name']
-            proj.code = row['project_code']
+            proj.code = row['project_research_code']
             proj.save()
             if created:
                 self.stdout.write('Added new account to "%s": %s'%(row['email'], row['project_code']))
+
+    def update_project_members(self):
+        rows = query_project_members()
+        proj_mems = {}
+        for row in rows:
+            try:
+                proj = Project.objects().get(account=row['project_code'])
+            except Project.DoesNotExist:
+                self.stdout.write('WARNING: Could not add member "%s" to project "%s", project does not exist.'%(row['email_address'], row['project_code']))
+                continue
+            try:
+                user = Subject.objects().get(email=row['email_address'])
+            except Subject.DoesNotExist:
+                self.stdout.write('WARNING: Could not add member "%s" to project "%s", user does not exist.'%(row['email_address'], row['project_code']))
+                continue
+            proj_mems.setdefault(proj, []).append(user)
+        for proj, mems in proj_mems.iteritems():
+            proj.members = mem
 
     def update_cpu_usage(self, filename):
 

@@ -24,6 +24,11 @@ def query_projects():
     cur.execute('SELECT * FROM project INNER JOIN user ON project.project_administrator=user.user_id')
     return cur.fetchall()
 
+def query_project_members():
+    cur = connect()
+    cur.execute('SELECT project_code, email_address FROM project INNER JOIN user_projects ON user_projects.project_id=project.project_id INNER JOIN user ON user_projects.user_id=user.user_id')
+    return cur.fetchall()
+
 def query_project(proj_code):
     cur = connect()
     cur.execute('SELECT * FROM project WHERE project_code=\'%s\''%proj_code)
