@@ -20,8 +20,10 @@ class Subject(models.Model):
     ]
     state = models.CharField(max_length=16, default="inactive",
         choices = STATE_CHOICES, verbose_name=_('State'))
+    title = models.CharField(max_length=16, blank=True, null=True)
     surname = models.CharField(max_length=64, blank=True, null=True,
         verbose_name=_('Surname'))
+    institution = models.CharField(max_length=256, blank=True, null=True, verbose_name=_('Institution'))
     givenname = models.CharField(max_length=64, blank=True, null=True,
         verbose_name=_('Given name'))
     email = models.EmailField(null=True, blank=True, verbose_name=_('Email'))

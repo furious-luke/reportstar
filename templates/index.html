@@ -85,18 +85,15 @@ and may be used as a factor in future resource allocations.
                 <div class="row">
                   <div class="span8 offset1">
                     <dl class="dl-horizontal">
-                    <dt>Project ID</dt><dd>p003_swin</dd>
-                    <dt>Project name</dt><dd>Hurley Group</dd>
-                    <dt>FOR code</dt><dd>020104</dd>
-                    <dt>Project leader</dt><dd>Jarrod Hurley</dd>
-                    <dt>Lead institute</dt><dd>Swinburne University of
-                      Technology</dd>
-                    <dt>Project members</dt><dd>Anna Sippel (Swinburne
-                University of Technology)<br/>Juan Madrid (Swinburne
-                University of Technology)</dd>
-                    <dt>CPU hours used</dt><dd>252,419</dd>
-                    <dt>Storage used</dt><dd>10 TB</dd>
-                    <dt>Storage quota</dt><dd>30 TB</dd>
+                    <dt>Project ID</dt><dd>{{ account }}</dd>
+                    <dt>Project name</dt><dd>{{ name }}</dd>
+                    <dt>FOR code</dt><dd>{{ code }}</dd>
+                    <dt>Project leader</dt><dd>{{ leader }}</dd>
+                    <dt>Lead institute</dt><dd>{{ institute }}</dd>
+                    <dt>Project members</dt><dd>{% for mem in members %}{{ mem }}<br/>{% endfor %}</dd>
+                    <dt>CPU hours used</dt><dd>{{ cpu }}</dd>
+                    <dt>Storage used</dt><dd>{{ storage }} TB</dd>
+                    <dt>Storage quota</dt><dd>{{ quota }} TB</dd>
                   </dl>
                 </div>
               </div>
