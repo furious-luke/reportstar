@@ -1,0 +1,8 @@
+g2 reporting
+Hello {{ givenname }} {{ surname }},
+
+Please go and fill out a form at {{ site }}{{ random }} if you please.
+
+All the best,
+g2 people.
+

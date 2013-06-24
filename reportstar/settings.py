@@ -164,5 +164,12 @@ LOGGING = {
 
 LANGUAGES = (
     ('en', 'English'),
-    ('de', 'Deutsch'),
 )
+
+EMAILCODE = 'secret'
+QUESTIONNAIRE_EMAIL_TEMPLATE = 'emailer.txt'
+QUESTIONNAIRE_EMAIL_FROM = 'jhurley@swin.edu.au'
+QUESTIONNAIRE_URL = 'http://asv1.org/reporting/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = '/tmp/reportstar_mails.txt'
