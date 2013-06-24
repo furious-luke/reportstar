@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from projects.moab import parse_proc_usage
-from projects.database import query_users, query_projects
+from projects.database import query_users, query_projects, query_project_members
 from projects.models import Project
 from questionnaire.models import Subject
 
@@ -17,53 +17,53 @@ class Command(BaseCommand):
         self.update_subjects()
         self.update_projects()
         self.update_project_members()
-        self.update_usage(args[0])
+        self.update_cpu_usage(args[0])
 
     def update_subjects(self):
         rows = query_users()
         for row in rows:
-            sub, created = Subject.objects.get_or_create(email=row['email_address'])
-            sub.title = row['title']
-            sub.givenname = row['firstname']
-            sub.surname = row['lastname']
-            sub.institution = row['institution_name']
+            sub, created = Subject.objects.get_or_create(email=unicode(row['email_address']))
+            sub.title = unicode(row['title'])
+            sub.givenname = unicode(row['firstname'], 'latin-1')
+            sub.surname = unicode(row['lastname'], 'latin-1')
+            sub.institution = unicode(row['institution_name'])
             sub.save()
             if created:
-                self.stdout.write('Created new subject with email: %s'%row['email_address'])
+                self.stdout.write(u'Created new subject with email: %s'%row['email_address'])
 
     def update_projects(self):
         rows = query_projects()
         for row in rows:
             try:
-                lead = Subject.objects().get(email=row['email'])
+                lead = Subject.objects.get(email=unicode(row['email_address']))
             except Subject.DoesNotExist:
-                self.stdout.write('WARNING: Could not proces "%s", user "%s" does not exist.'%(row['project_code'], row['email']))
+                self.stdout.write(u'WARNING: Could not proces "%s", user "%s" does not exist.'%(row['project_code'], row['email_address']))
                 continue
-            proj, created = Project.objects.get_or_create(account=row['project_code'])
+            proj, created = Project.objects.get_or_create(account=unicode(row['project_code']))
             proj.leader = lead
-            proj.name = row['project_name']
-            proj.code = row['project_research_code']
+            proj.name = unicode(row['project_name'])
+            proj.code = unicode(row['project_research_code'])
             proj.save()
             if created:
-                self.stdout.write('Added new account to "%s": %s'%(row['email'], row['project_code']))
+                self.stdout.write(u'Added new account to "%s": %s'%(row['email_address'], row['project_code']))
 
     def update_project_members(self):
         rows = query_project_members()
         proj_mems = {}
         for row in rows:
             try:
-                proj = Project.objects().get(account=row['project_code'])
+                proj = Project.objects.get(account=unicode(row['project_code']))
             except Project.DoesNotExist:
-                self.stdout.write('WARNING: Could not add member "%s" to project "%s", project does not exist.'%(row['email_address'], row['project_code']))
+                self.stdout.write(u'WARNING: Could not add member "%s" to project "%s", project does not exist.'%(row['email_address'], row['project_code']))
                 continue
             try:
-                user = Subject.objects().get(email=row['email_address'])
+                user = Subject.objects.get(email=unicode(row['email_address']))
             except Subject.DoesNotExist:
-                self.stdout.write('WARNING: Could not add member "%s" to project "%s", user does not exist.'%(row['email_address'], row['project_code']))
+                self.stdout.write(u'WARNING: Could not add member "%s" to project "%s", user does not exist.'%(row['email_address'], row['project_code']))
                 continue
             proj_mems.setdefault(proj, []).append(user)
         for proj, mems in proj_mems.iteritems():
-            proj.members = mem
+            proj.members = mems
 
     def update_cpu_usage(self, filename):
 
@@ -78,8 +78,10 @@ class Command(BaseCommand):
             try:
                 proj = Project.objects.get(account=acc)
             except Project.DoesNotExist:
-                self.stdout.write('WARNING: No project associated with account: %s'%acc)
+                self.stdout.write(u'WARNING: No project associated with account: %s'%acc)
                 continue
+            if ch == None:
+                ch = 0
             proj.cpu_usage = ch
             proj.save()
-            self.stdout.write('Set usage for %s to: %g'%(acc, ch))
+            self.stdout.write(u'Set usage for %s to: %g'%(acc, ch))
