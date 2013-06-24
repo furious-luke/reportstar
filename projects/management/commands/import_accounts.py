@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from projects.moab import parse_proc_usage
-from projects.database import query_all_projects
+from projects.database import query_users, query_projects
 from projects.models import Project
 from questionnaire.models import Subject
 
@@ -19,7 +19,7 @@ class Command(BaseCommand):
         self.update_usage(args[0])
 
     def update_subjects(self):
-        rows = query_subjects()
+        rows = query_users()
         for row in rows:
             sub, created = Subject.objects.get_or_create(email=row['email_address'])
             sub.title = row['title']
@@ -28,7 +28,7 @@ class Command(BaseCommand):
             sub.institution = row['institution_name']
             sub.save()
             if created:
-                self.stdout.write('Created new subject with email: %s'%email)
+                self.stdout.write('Created new subject with email: %s'%row['email_address'])
 
     def update_projects(self):
         rows = query_projects()
