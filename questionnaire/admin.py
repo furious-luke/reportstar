@@ -39,7 +39,7 @@ class QuestionnaireAdmin(admin.ModelAdmin):
     pass
 
 class RunInfoAdmin(admin.ModelAdmin):
-    list_display = ['random', 'runid', 'subject', 'created', 'emailsent', 'lastemailerror']
+    list_display = ['random', 'runid', 'subject', 'project', 'created', 'emailsent', 'lastemailerror']
     pass
 
 class RunInfoHistoryAdmin(admin.ModelAdmin):

@@ -47,6 +47,9 @@ class Subject(models.Model):
     def __unicode__(self):
         return u'%s, %s (%s)' % (self.surname, self.givenname, self.email)
 
+    def full_name(self):
+        return u'%s, %s (%s)'%(self.surname, self.givenname, self.institution)
+
     def next_runid(self):
         "Return the string form of the runid for the upcoming run"
         return str(self.nextrun.year)
@@ -144,6 +147,7 @@ class QuestionSet(models.Model):
 class RunInfo(models.Model):
     "Store the active/waiting questionnaire runs here"
     subject = models.ForeignKey(Subject)
+    project = models.ForeignKey('projects.Project')
     random = models.CharField(max_length=32) # probably a randomized md5sum
     runid = models.CharField(max_length=32)
     # questionset should be set to the first QuestionSet initially, and to null on completion

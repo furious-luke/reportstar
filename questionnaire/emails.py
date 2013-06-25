@@ -9,6 +9,7 @@ from django.template import Context, loader
 from django.utils import translation
 from django.conf import settings
 from django.http import Http404, HttpResponse
+from django.contrib.auth.decorators import permission_required
 from models import Subject, QuestionSet, RunInfo, Questionnaire
 from datetime import datetime
 from django.shortcuts import render_to_response, get_object_or_404
@@ -48,24 +49,28 @@ def _new_runinfo(subject, questionset):
     """
     nextrun = subject.nextrun
     runid = str(nextrun.year)
-    entries = list(RunInfo.objects.filter(runid=runid, subject=subject))
-    if len(entries)>0:
-        r = entries[0]
-    else:
-        r = RunInfo()
-        r.random = _new_random(subject)
-        r.subject = subject
-        r.runid = runid
-        r.emailcount = 0
-        r.created = datetime.now()
-    r.questionset = questionset
-    r.save()
+    all_runs = []
+    for proj in subject.leading.all():
+        entries = list(RunInfo.objects.filter(runid=runid, subject=subject, project=proj))
+        if len(entries)>0:
+            r = entries[0]
+        else:
+            r = RunInfo()
+            r.random = _new_random(subject)
+            r.subject = subject
+            r.project = proj;
+            r.runid = runid
+            r.emailcount = 0
+            r.created = datetime.now()
+        r.questionset = questionset
+        r.save()
+        all_runs.append(r)
     if nextrun.month == 2 and nextrun.day == 29: # the only exception?
         subject.nextrun = datetime(nextrun.year + 1, 2, 28)
     else:
         subject.nextrun = datetime(nextrun.year + 1, nextrun.month, nextrun.day)
     subject.save()
-    return r
+    return all_runs
 
 def _send_email(runinfo):
     "Send the email for a specific runinfo entry"
@@ -112,7 +117,7 @@ def _send_email(runinfo):
     runinfo.save()
     return False
 
-
+@permission_required("questionnaire.management")
 def send_emails(request=None, qname=None):
     """
     1. Create a runinfo entry for each subject who is due and has state 'active'
@@ -122,8 +127,8 @@ def send_emails(request=None, qname=None):
     This can be called either by "./manage.py questionnaire_emails" (without
     request) or through the web, if settings.EMAILCODE is set and matches.
     """
-    if request and request.GET.get('code') != getattr(settings,'EMAILCODE', False):
-        raise Http404
+    # if request and request.GET.get('code') != getattr(settings,'EMAILCODE', False):
+    #     raise Http404
     if not qname:
         qname = getattr(settings, 'QUESTIONNAIRE_DEFAULT', None)
     if not qname:

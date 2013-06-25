@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.core.management.base import BaseCommand, CommandError
 from projects.moab import parse_proc_usage
 from projects.database import query_users, query_projects, query_project_members
@@ -28,9 +29,10 @@ class Command(BaseCommand):
             sub.surname = unicode(row['lastname'], 'latin-1')
             sub.institution = unicode(row['institution_name'])
             sub.state = 'inactive' # auto inactive, only admins should be active
-            sub.save()
             if created:
+                sub.nextrun = datetime.now();
                 self.stdout.write(u'Created new subject with email: %s'%row['email_address'])
+            sub.save()
 
     def update_projects(self):
         rows = query_projects()
@@ -50,6 +52,7 @@ class Command(BaseCommand):
 
             # Update the leader to active.
             lead.state = 'active'
+            lead.save()
             self.stdout.write(u'Set leader "%s" to active.'%lead.email)
 
     def update_project_members(self):

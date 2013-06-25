@@ -11,3 +11,9 @@ class Project(models.Model):
     cpu_usage = models.DecimalField(decimal_places=4, max_digits=10, default=0, verbose_name=_('CPU hour usage'))
     disk_quota = models.DecimalField(decimal_places=4, max_digits=10, default=0)
     disk_usage = models.DecimalField(decimal_places=4, max_digits=10, default=0)
+
+    def __unicode__(self):
+        txt = u'%s'%self.account
+        if self.leader:
+            txt += u' (%s)'%self.leader.full_name()
+        return txt
