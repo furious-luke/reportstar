@@ -1,64 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "_base.html" %}
 
-<head>
-  <meta charset="utf-8">
-    
-  <title>{% block title %}g2 Annual Reporting{% endblock title %}</title>
-    
-  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" type="text/css"/>
-  <link rel="stylesheet" href="/static/questionnaire.css" media="screen"></script>
+{% block main_content %}
 
-  <style type="text/css">
-  {% block styleextra %}
-        
-  {% endblock %}
-  </style>
+<div class="row">
+  <div class="span10 offset1">
+    <p class="lead">Internal error.</p>
+  </div>
+</div>
 
-  <script src="http://code.jquery.com/jquery.js"></script>
-  <script src="/static/bootstrap/js/bootstrap.js"></script>
-    
-  {% block headextra %}
-  {% endblock %}
-
-  <!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-</head>
-
-<body>
-
-    <div class="container">
-      <div class="content">
-
-        <div id="languages">
-          {% block language %}
-          {% for lang in LANGUAGES %}
-          {% if not forloop.first %} | {% endif %}
-          <a href="/setlang/?lang={{ lang.0 }}&next={{ request.path }}">{{ lang.1 }}</a>
-          {% endfor %}
-          {% endblock language %}
-        </div>
-
-        <div class="page-header">
-          <h3>gSTAR and swinSTAR annual project report</h3>
-        </div>
-
-        <div class="row">
-          <div class="span10 offset1">
-            <p class="lead">Internal error.</p>
-          </div>
-        </div>
-
-      </div>
-    </div>
-
-    <div id="footer">
-      <div class="container">
-        <p style="margin-top:20px;margin-bottom:20px"
-      class="text-center muted credit">Luke Hodkinson (Swinburne University of Technology), 2013</p>
-      </div>
-    </div>
-
-</body>
-</html>
+{% endblock main_content %}

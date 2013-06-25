@@ -1,124 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "_base.html" %}
 
-<head>
-  <meta charset="utf-8">
-    
-  <title>{% block title %}Questionnaire{% endblock title %}</title>
-    
-  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css" type="text/css"/>
-  <link rel="stylesheet" href="/static/questionnaire.css" media="screen"></script>
+{% block main_content %}
 
-  <style type="text/css">
-  {% block styleextra %}
-        
-  {% endblock %}
-  </style>
+<div class="row">
+  <div class="span10 offset1">
+    <h4>Reporting period: July 1st 2012 through to June 30th 2013</h4>
+  </div>
+</div>
 
-  <script src="http://code.jquery.com/jquery.js"></script>
-  <script src="/static/bootstrap/js/bootstrap.js"></script>
-    
-  {% block headextra %}
-  {% endblock %}
+<div class="row">
+  <div class="span10 offset1"><hr/></div>
+</div>
 
-  <!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
-</head>
-
-<body>
-
-    <div class="container">
-      <div class="content">
-
-        <div id="languages">
-          {% block language %}
-          {% for lang in LANGUAGES %}
-          {% if not forloop.first %} | {% endif %}
-          <a href="/setlang/?lang={{ lang.0 }}&next={{ request.path }}">{{ lang.1 }}</a>
-          {% endfor %}
-          {% endblock language %}
-        </div>
-
-        <div class="page-header">
-          <h3>gSTAR and swinSTAR annual project report</h3>
-        </div>
-
-        <div class="row">
-          <div class="span10 offset1">
-            <h4>Reporting period: July 1st 2012 through to June 30th
-            2013</h4>
-          </div>
-        </div>
-
-            <div class="row">
-              <div class="span10 offset1"><hr/></div>
-            </div>
-
-            <div class="row">
-              <div class="span1 offset1"><em>Notes:</em></div>
-              <div class="span9">
-                <em>
-                <ol>
-                  <li>Information gathered from annual reports will be utilised to fulfil reporting
+<div class="row">
+  <div class="span1 offset1"><em>Notes:</em></div>
+  <div class="span9">
+    <em>
+      <ol>
+        <li>Information gathered from annual reports will be utilised to fulfil reporting
 requirements at university and government levels;
-                  <li>the first section is auto-populated for you with the information we currently have
+        <li>the first section is auto-populated for you with the information we currently have
 recorded for the project;
-                  <li>please fill out the second section as accurately as possible to reflect your usage of
+        <li>please fill out the second section as accurately as possible to reflect your usage of
 the gSTAR and/or swinSTAR compute nodes over the reporting period;
-                  <li>annual reporting for projects is a mandatory requirement for usage of the facility
+        <li>annual reporting for projects is a mandatory requirement for usage of the facility
 and may be used as a factor in future resource allocations.
-                </ol>
-                </em>
-              </div>
-            </div>
+      </ol>
+    </em>
+  </div>
+</div>
 
-            <div class="row">
-              <div class="span10 offset1"><hr/></div>
-            </div>
+<div class="row">
+  <div class="span10 offset1"><hr/></div>
+</div>
 
-            <div class="row">
-              <div class="span10 offset1">
-                <p class="lead">Provided is a summary of your project.
-              Please complete the questionnaire by clicking the button
-              below.</p>
-                <div class="row">
-                  <div class="span8 offset1">
-                    <dl class="dl-horizontal">
-                    <dt>Project ID</dt><dd>{{ account }}</dd>
-                    <dt>Project name</dt><dd>{{ name }}</dd>
-                    <dt>FOR code</dt><dd>{{ code }}</dd>
-                    <dt>Project leader</dt><dd>{{ leader }}</dd>
-                    <dt>Lead institute</dt><dd>{{ institution }}</dd>
-                    <dt>Project members</dt><dd>{% for mem in members %}{{ mem.full_name }}<br/>{% endfor %}</dd>
-                    <dt>CPU hours used</dt><dd>{{ cpu }}</dd>
-                    <!-- <dt>Storage used</dt><dd>{{ storage }} TB</dd> -->
-                    <!-- <dt>Storage quota</dt><dd>{{ quota }} TB</dd> -->
-                  </dl>
-                </div>
-              </div>
-            </div>
-
-            <div class="row"><div class="span12">&nbsp;</div></div>
-
-            <div class="row">
-              <div class="span3 offset5">
-                <a href="q/{{ runid }}" class="btn btn-primary btn-large btn-block">Ready?</a>
-              </div>
-            </div>
-
-            <div class="row"><div class="span12">&nbsp;</div></div>
-            <div class="row"><div class="span12">&nbsp;</div></div>
-
+<div class="row">
+  <div class="span10 offset1">
+    <p class="lead">Provided is a summary of your project.
+    Please complete the questionnaire by clicking the button
+    below.</p>
+    <div class="row">
+      <div class="span8 offset1">
+        <dl class="dl-horizontal">
+          <dt>Project ID</dt><dd>{{ account }}</dd>
+          <dt>Project name</dt><dd>{{ name }}</dd>
+          <dt>FOR code</dt><dd>{{ code }}</dd>
+          <dt>Project leader</dt><dd>{{ leader }}</dd>
+          <dt>Lead institute</dt><dd>{{ institution }}</dd>
+          <dt>Project members</dt><dd>{% for mem in members %}{{ mem.full_name }}<br/>{% endfor %}</dd>
+          <dt>CPU hours used</dt><dd>{{ cpu }}</dd>
+          <!-- <dt>Storage used</dt><dd>{{ storage }} TB</dd> -->
+          <!-- <dt>Storage quota</dt><dd>{{ quota }} TB</dd> -->
+        </dl>
       </div>
     </div>
+  </div>
+</div>
 
-    <div id="footer">
-      <div class="container">
-        <p style="margin-top:20px;margin-bottom:20px"
-      class="text-center muted credit">Luke Hodkinson (Swinburne University of Technology), 2013</p>
-      </div>
-    </div>
+<div class="row"><div class="span12">&nbsp;</div></div>
 
-</body>
-</html>
+<div class="row">
+  <div class="span3 offset5">
+    <a href="q/{{ runid }}" class="btn btn-primary btn-large btn-block">Ready?</a>
+  </div>
+</div>
+
+<div class="row"><div class="span12">&nbsp;</div></div>
+<div class="row"><div class="span12">&nbsp;</div></div>
+
+{% endblock main_content %}
