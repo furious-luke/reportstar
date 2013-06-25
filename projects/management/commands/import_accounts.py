@@ -27,6 +27,7 @@ class Command(BaseCommand):
             sub.givenname = unicode(row['firstname'], 'latin-1')
             sub.surname = unicode(row['lastname'], 'latin-1')
             sub.institution = unicode(row['institution_name'])
+            sub.state = 'inactive' # auto inactive, only admins should be active
             sub.save()
             if created:
                 self.stdout.write(u'Created new subject with email: %s'%row['email_address'])
@@ -46,6 +47,10 @@ class Command(BaseCommand):
             proj.save()
             if created:
                 self.stdout.write(u'Added new account to "%s": %s'%(row['email_address'], row['project_code']))
+
+            # Update the leader to active.
+            lead.state = 'active'
+            self.stdout.write(u'Set leader "%s" to active.'%lead.email)
 
     def update_project_members(self):
         rows = query_project_members()
