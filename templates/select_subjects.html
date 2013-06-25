@@ -1,0 +1,49 @@
+{% extends "_base.html" %}
+
+{% block headextra %}
+<script>
+$(document).ready(function(){
+  $('#select-all').click(function() {
+    $('.subject-btn').addClass('active');
+  })
+  $('#select-none').click(function() {
+    $('.subject-btn').removeClass('active');
+  })
+  $('#the-form').submit(function() {
+    var all_subjs = [];
+    $('.subject-btn.active').each(function(){
+      all_subjs.push($(this).attr('pk'));
+    });
+    $('input[name="subjects"]').val(all_subjs.join());
+  });
+});
+</script>
+{% endblock headextra %}
+
+{% block main_content %}
+
+<div class="row">
+  <div class="span10 offset1">
+    <h4>Select subjects</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span4 offset1">
+    <button type="button" id="select-all" class="btn btn-block">Select all</button>
+    <button type="button" id="select-none" class="btn btn-block">Select none</button>
+    {% for s in subs %}
+    <button type="button" pk="{{ s.pk }}" class="btn btn-block subject-btn" data-toggle="button">{{ s }}</button>
+    {% endfor %}
+    <form action="{% url 'email_go' %}" method="post" id="the-form">
+      {% csrf_token %}
+      <input type="hidden" name="questionnaire" value="{{ qu.pk }}" />
+      <input type="hidden" name="subjects" value="" />
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% endblock main_content %}
