@@ -1,8 +1,11 @@
-g2 reporting
-Hello {{ givenname }} {{ surname }},
+g2 annual project report
+Dear {% if title %}{{ title }}{% endif %} {{ givenname }} {{ surname }},
 
-Please go and fill out a form at {{ site }}{{ random }} if you please.
+Please complete the g2 annual project reporting questionnaire at:
+
+  {{ site }}{{ random }}
+
+Thanks very much.
 
 All the best,
 g2 people.
-

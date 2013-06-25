@@ -78,6 +78,7 @@ def _send_email(runinfo):
     translation.activate(subject.language)
     tmpl = loader.get_template(settings.QUESTIONNAIRE_EMAIL_TEMPLATE)
     c = Context()
+    c['title'] = subject.title
     c['surname'] = subject.surname
     c['givenname'] = subject.givenname
     c['gender'] = subject.gender
