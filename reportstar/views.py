@@ -34,7 +34,8 @@ def select_subjects(request):
     qs = Project.objects.all()
     for proj in qs:
         if proj.leader:
-            subs.append(proj.leader)
+            if proj.leader not in subs:
+                subs.append(proj.leader)
     return render_to_response('select_subjects.html', locals(), context_instance=RequestContext(request))
 
 @permission_required("questionnaire.management")
@@ -44,7 +45,9 @@ def email(request):
     subjs = []
     for pk in subj_pks:
         if pk != '':
-            subjs.append(get_object_or_404(Subject, pk=pk))
+            cur = get_object_or_404(Subject, pk=pk)
+            if cur not in subjs:
+                subjs.append(cur)
     qs = Subject.objects.all()
     for s in qs:
         if s in subjs:
