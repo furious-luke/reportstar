@@ -1,4 +1,4 @@
-g2 annual project report for {{ account }}
+g2 (gSTAR/swinSTAR) annual project report for {{ account }}
 Dear {% if title %}{{ title }}{% endif %} {{ givenname }} {{ surname }},
 
 Please complete the g2 annual project reporting questionnaire at:
