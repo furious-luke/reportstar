@@ -168,8 +168,8 @@ LANGUAGES = (
 )
 
 QUESTIONNAIRE_EMAIL_TEMPLATE = 'emailer.txt'
-QUESTIONNAIRE_EMAIL_FROM = 'jhurley@swin.edu.au'
-QUESTIONNAIRE_URL = 'http://asv1.org/g2/reporting/ready/'
+QUESTIONNAIRE_EMAIL_FROM = 'hpc-support@swin.edu.au'
+QUESTIONNAIRE_URL = 'http:///127.0.0.1:8000/reporting/ready/'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = '/tmp/reportstar_mails'

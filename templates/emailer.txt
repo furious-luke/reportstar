@@ -1,9 +1,21 @@
-g2 annual project report
+g2 annual project report for {{ account }}
 Dear {% if title %}{{ title }}{% endif %} {{ givenname }} {{ surname }},
 
 Please complete the g2 annual project reporting questionnaire at:
 
   {{ site }}{{ random }}
+
+by Friday July 12, 2013.
+
+It is important that we receive your report by the due date as the
+information is required in order to fulfill government and university
+annual reporting deadlines. Particularly important is information on
+publications, grants and collaborations related to your use of the
+HPC facility. With this in mind the report form has been designed so
+that it should not take up too much of your time.
+
+Please contact Jarrod Hurley <jhurley@swin.edu.au> if you have any
+questions about the reporting process.
 
 Thanks very much.
 

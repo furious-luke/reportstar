@@ -40,37 +40,34 @@ def _new_random(subject):
     return "%dz%s" % (subject.id, md5(subject.surname + str(subject.nextrun) + hex(random.randint(1,999999))).hexdigest()[:6])
 
 
-def _new_runinfo(subject, questionset):
+def _new_runinfo(project, questionset):
     """
     Create a new RunInfo entry with a random code
 
     If a unique subject+runid entry already exists, return that instead..
     That should only occurs with manual database changes
     """
-    nextrun = subject.nextrun
+    nextrun = project.leader.nextrun
     runid = str(nextrun.year)
-    all_runs = []
-    for proj in subject.leading.all():
-        entries = list(RunInfo.objects.filter(runid=runid, subject=subject, project=proj))
-        if len(entries)>0:
-            r = entries[0]
-        else:
-            r = RunInfo()
-            r.random = _new_random(subject)
-            r.subject = subject
-            r.project = proj;
-            r.runid = runid
-            r.emailcount = 0
-            r.created = datetime.now()
-        r.questionset = questionset
-        r.save()
-        all_runs.append(r)
-    if nextrun.month == 2 and nextrun.day == 29: # the only exception?
-        subject.nextrun = datetime(nextrun.year + 1, 2, 28)
+    entries = list(RunInfo.objects.filter(runid=runid, subject=project.leader, project=project))
+    if len(entries)>0:
+        r = entries[0]
     else:
-        subject.nextrun = datetime(nextrun.year + 1, nextrun.month, nextrun.day)
-    subject.save()
-    return all_runs
+        r = RunInfo()
+        r.random = _new_random(project.leader)
+        r.subject = project.leader
+        r.project = project;
+        r.runid = runid
+        r.emailcount = 0
+        r.created = datetime.now()
+    r.questionset = questionset
+    r.save()
+    # if nextrun.month == 2 and nextrun.day == 29: # the only exception?
+    #     subject.nextrun = datetime(nextrun.year + 1, 2, 28)
+    # else:
+    #     subject.nextrun = datetime(nextrun.year + 1, nextrun.month, nextrun.day)
+    # subject.save()
+    return r
 
 def _send_email(runinfo):
     "Send the email for a specific runinfo entry"
@@ -86,6 +83,7 @@ def _send_email(runinfo):
     c['random'] = runinfo.random
     c['runid'] = runinfo.runid
     c['created'] = runinfo.created
+    c['account'] = runinfo.project.account
     c['site'] = getattr(settings, 'QUESTIONNAIRE_URL', '(settings.QUESTIONNAIRE_URL not set)')
     email = tmpl.render(c)
     emailFrom = settings.QUESTIONNAIRE_EMAIL_FROM
@@ -119,7 +117,7 @@ def _send_email(runinfo):
     return False
 
 @permission_required("questionnaire.management")
-def send_emails(request=None, qname=None):
+def send_emails(request=None, qname=None, projects=[]):
     """
     1. Create a runinfo entry for each subject who is due and has state 'active'
     2. Send an email for each runinfo entry whose subject receives email,
@@ -141,9 +139,12 @@ def send_emails(request=None, qname=None):
         return
     questionset = questionset[0]
 
-    viablesubjects = Subject.objects.filter(nextrun__lte = datetime.now(), state='active')
-    for s in viablesubjects:
-        r = _new_runinfo(s, questionset)
+    # viablesubjects = Subject.objects.filter(nextrun__lte = datetime.now(), state='active')
+    # viablesubjects = [p.subject for p in projects if p.subject]
+    # for s in viablesubjects:
+    for p in projects:
+        if p.leader:
+            r = _new_runinfo(p, questionset)
     runinfos = RunInfo.objects.filter(subject__formtype='email', questionset__questionnaire=questionnaire)
     WEEKAGO = time.time() - (60 * 60 * 24 * 7) # one week ago
     outlog = []

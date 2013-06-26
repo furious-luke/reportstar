@@ -72,6 +72,12 @@
                         <span class="qnumber">{{ question.display_number }}.</span> 
                         {{ question.text }}
                     </div>
+                    {% if forloop.first and proj_desc %}
+                    <div class="proj_desc">
+                      <h5>Project description</h5>
+                      <p>{{ proj_desc }}</p>
+                    </div>
+                    {% endif %}
                     <div class="answer">
                         {% if error %}
                             <div class="alert-message block-message error input"><strong>{{ error }}</strong></div>

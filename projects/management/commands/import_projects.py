@@ -24,6 +24,7 @@ class Command(BaseCommand):
             proj.leader = lead
             proj.name = unicode(row['project_name'])
             proj.code = unicode(row['project_research_code'])
+            proj.description = unicode(row['project_description'])
             proj.save()
             if created:
                 self.stdout.write(u'Added new account to "%s": %s'%(row['email_address'], row['project_code']))

@@ -542,6 +542,15 @@ def show_questionnaire(request, runinfo, errors={}):
                 else:
                     qvalues[s[1]] = v
 
+    # Include the project description if this is the first
+    # questionset.
+    if runinfo.questionset.heading == 'General questions':
+        proj_desc = runinfo.project.description
+        if not proj_desc:
+            proj_desc = None
+    else:
+        proj_desc = None
+
     r = r2r("questionnaire/questionset.html", request,
         questionset=runinfo.questionset,
         runinfo=runinfo,
@@ -552,6 +561,7 @@ def show_questionnaire(request, runinfo, errors={}):
         qvalues=qvalues,
         jsinclude=jsinclude,
         cssinclude=cssinclude,
+        proj_desc=proj_desc,
         async_progress=async_progress,
         async_url=reverse('progress', args=[runinfo.random])
     )

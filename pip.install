@@ -4,3 +4,4 @@ pyparsing==1.5.7
 textile
 mysql-python
 flup
+south

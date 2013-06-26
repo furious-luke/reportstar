@@ -30,30 +30,28 @@ def select_questionnaire(request):
 @permission_required("questionnaire.management")
 def select_subjects(request):
     qu = get_object_or_404(Questionnaire, pk=request.GET.get('q', None))
-    subs = []
-    qs = Project.objects.all()
-    for proj in qs:
+    projs = []
+    for proj in Project.objects.all():
         if proj.leader:
-            if proj.leader not in subs:
-                subs.append(proj.leader)
+            projs.append(proj)
     return render_to_response('select_subjects.html', locals(), context_instance=RequestContext(request))
 
 @permission_required("questionnaire.management")
 def email(request):
     qu = get_object_or_404(Questionnaire, pk=request.POST.get('questionnaire', None))
-    subj_pks = request.POST.get('subjects', '').split(',')
-    subjs = []
-    for pk in subj_pks:
+    proj_pks = request.POST.get('projects', '').split(',')
+    projs = []
+    for pk in proj_pks:
         if pk != '':
-            cur = get_object_or_404(Subject, pk=pk)
-            if cur not in subjs:
-                subjs.append(cur)
-    qs = Subject.objects.all()
-    for s in qs:
-        if s in subjs:
-            s.state = 'active'
-            s.nextrun = datetime.now()
-        else:
-            s.state = 'inactive'
-        s.save()
-    return send_emails(request, qu.name)
+            cur = get_object_or_404(Project, pk=pk)
+            if cur not in projs:
+                projs.append(cur)
+    # qs = Subject.objects.all()
+    # for s in qs:
+    #     if s in subjs:
+    #         s.state = 'active'
+    #         s.nextrun = datetime.now()
+    #     else:
+    #         s.state = 'inactive'
+    #     s.save()
+    return send_emails(request, qu.name, projs)
