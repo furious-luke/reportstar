@@ -18,6 +18,8 @@ def index(request, runid):
         'institution': sub.institution,
         'members': proj.members.all(),
         'cpu': proj.cpu_usage,
+        'storage': proj.disk_usage,
+        'quota': proj.disk_quota,
         'runid': runid,
     }
     return render_to_response('index.html', ctx, context_instance=RequestContext(request))

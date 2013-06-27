@@ -344,6 +344,12 @@ def questionnaire(request, runcode=None, qs=None):
     items = request.POST.items()
     extra = {} # question_object => { "ANSWER" : "123", ... }
 
+    # Pull out the logo value, if it's there.
+    if 'logo' in request.FILES:
+        logo_file = request.FILES['logo']
+        runinfo.project.logo = logo_file
+        runinfo.project.save()
+
     # this will ensure that each question will be processed, even if we did not receive
     # any fields for it. Also works to ensure the user doesn't add extra fields in
     for x in expected:
@@ -548,8 +554,10 @@ def show_questionnaire(request, runinfo, errors={}):
         proj_desc = runinfo.project.description
         if not proj_desc:
             proj_desc = None
+        upload_logo = True
     else:
         proj_desc = None
+        upload_logo = False
 
     r = r2r("questionnaire/questionset.html", request,
         questionset=runinfo.questionset,
@@ -562,6 +570,7 @@ def show_questionnaire(request, runinfo, errors={}):
         jsinclude=jsinclude,
         cssinclude=cssinclude,
         proj_desc=proj_desc,
+        upload_logo=upload_logo,
         async_progress=async_progress,
         async_url=reverse('progress', args=[runinfo.random])
     )
