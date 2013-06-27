@@ -15,7 +15,7 @@ class Project(models.Model):
     cpu_usage = models.DecimalField(decimal_places=4, max_digits=10, default=0, verbose_name=_('CPU hour usage'))
     disk_quota = models.DecimalField(decimal_places=4, max_digits=10, default=0)
     disk_usage = models.DecimalField(decimal_places=4, max_digits=10, default=0)
-    logo = models.FileField(upload_to=make_filename)
+    logo = models.FileField(upload_to=make_filename, blank=True, null=True)
 
     def __unicode__(self):
         txt = u'%s'%self.account
