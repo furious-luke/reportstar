@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'questionnaire.page',
     'django.contrib.markup',
     'projects',
+    'south',
 )
 
 # A sample logging configuration. The only tangible logging
