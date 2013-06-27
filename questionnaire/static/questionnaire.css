@@ -104,6 +104,10 @@ html, body {
     margin-left: 35px;
 }
 
+span.help-block {
+    color: black;
+}
+
 input.sending {
     text-shadow: 0px 0px 5px white !important;
     -webkit-transition: 0.3s linear all !important;  
