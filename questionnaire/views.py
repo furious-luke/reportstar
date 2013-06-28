@@ -43,9 +43,9 @@ def get_question(number, questionnaire):
     return res and res[0] or None
 
 
-def delete_answer(question, subject, runid):
+def delete_answer(question, subject, project, runid):
     "Delete the specified question/subject/runid combination from the Answer table"
-    Answer.objects.filter(subject=subject, runid=runid, question=question).delete()
+    Answer.objects.filter(subject=subject, project=project, runid=runid, question=question).delete()
 
 
 def add_answer(runinfo, question, answer_dict):
@@ -73,7 +73,7 @@ def add_answer(runinfo, question, answer_dict):
         raise AnswerException("No Processor defined for question type %s" % type)
 
     # first, delete all existing answers to this question for this particular user+run
-    delete_answer(question, runinfo.subject, runinfo.runid)
+    delete_answer(question, runinfo.subject, runinfo.project, runinfo.runid)
     
     # then save the new answer to the database
     answer.save()
