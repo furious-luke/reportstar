@@ -356,6 +356,7 @@ class Choice(models.Model):
 
 class Answer(models.Model):
     subject = models.ForeignKey(Subject, help_text = u'The user who supplied this answer')
+    project = models.ForeignKey('projects.Project')
     question = models.ForeignKey(Question, help_text = u"The question that this is an answer to")
     runid = models.CharField(u'RunID', help_text = u"The RunID (ie. year)", max_length=32)
     answer = models.TextField()

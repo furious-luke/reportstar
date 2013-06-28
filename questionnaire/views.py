@@ -59,6 +59,7 @@ def add_answer(runinfo, question, answer_dict):
     answer = Answer()
     answer.question = question
     answer.subject = runinfo.subject
+    answer.project = runinfo.project
     answer.runid = runinfo.runid
 
     type = question.get_type()
