@@ -1,7 +1,7 @@
+from simplejson import dumps
 from questionnaire import *
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.utils.simplejson import dumps
 
 @question_proc('range')
 def question_range(request, question):

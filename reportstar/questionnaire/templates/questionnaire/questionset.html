@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load markup questionnaire i18n %}
+{% load markup_tags questionnaire i18n %}
 
 {% block headextra %}
     <script type="text/javascript" src="{{ STATIC_URL }}jquery.min.js"></script>
@@ -39,7 +39,7 @@
     {% endif %}
 
     <div class="questionset-title">
-    {{ questionset.text|textile }}
+    {{ questionset.text|apply_markup:"textile" }}
     </div>
 
     <form name="qform" id="qform" action="{{ request.path }}"
@@ -99,7 +99,7 @@
             </div> <!-- /question container -->
             {% if question.footer %}
                 <div class="question-footer">
-                    {{ question.footer|textile }}
+                    {{ question.footer|apply_markup:"textile" }}
                     <div class="clearfix"></div>
                 </div>
             {% endif %}

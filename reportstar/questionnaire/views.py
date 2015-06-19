@@ -256,7 +256,7 @@ def redirect_to_qs(runinfo):
                 args=[ runinfo.random, runinfo.questionset.sortid ])
     return HttpResponseRedirect(url)
 
-@transaction.commit_on_success
+@transaction.atomic
 def questionnaire(request, runcode=None, qs=None):
     """
     Process submitted answers (if present) and redirect to next page
@@ -282,7 +282,7 @@ def questionnaire(request, runcode=None, qs=None):
     runinfo = get_runinfo(runcode)
 
     if not runinfo:
-        transaction.commit()
+        # transaction.commit()
         return HttpResponseRedirect('/')
 
     # let the runinfo have a piggy back ride on the request
@@ -314,7 +314,7 @@ def questionnaire(request, runcode=None, qs=None):
                 return redirect_to_qs(runinfo)
             runinfo.questionset = qs
             runinfo.save()
-            transaction.commit()
+            # transaction.commit()
         # no questionset id in URL, so redirect to the correct URL
         if qs is None:
             return redirect_to_qs(runinfo)
@@ -421,7 +421,7 @@ def questionnaire(request, runcode=None, qs=None):
     if next is None: # we are finished
         return finish_questionnaire(runinfo, questionnaire)
 
-    transaction.commit()
+    # transaction.commit()
     return redirect_to_qs(runinfo)
 
 def finish_questionnaire(runinfo, questionnaire):
@@ -449,7 +449,7 @@ def finish_questionnaire(runinfo, questionnaire):
         runinfo.save()
     else:
         runinfo.delete()
-    transaction.commit()
+    # transaction.commit()
     if redirect_url:
         return HttpResponseRedirect(redirect_url)
     return r2r("questionnaire/complete.$LANG.html", request)
