@@ -17,6 +17,8 @@ urlpatterns = patterns('',
     url(r'^emailer/$', 'reportstar.views.select_questionnaire'),
     url(r'^emailer/subjects/$', 'reportstar.views.select_subjects', name="email_subj"),
     url(r'^emailer/go/$', 'reportstar.views.email', name="email_go"),
+    url(r'^document/(?P<proj_id>[a-zA-Z0-9_]+)/(?P<year>[0-9]+)/$', 'reportstar.views.document', name='document'),
+    url(r'^logos$', 'reportstar.views.logos', name='logos'),
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
 )

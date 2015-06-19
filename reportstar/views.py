@@ -1,9 +1,10 @@
 from datetime import datetime
+from django.db.models import Q
 from django.template import RequestContext
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import permission_required
 from projects.models import Project
-from questionnaire.models import RunInfo, Questionnaire, Subject
+from questionnaire.models import RunInfo, Questionnaire, Subject, Answer
 from questionnaire.emails import send_emails
 
 def index(request, runid):
@@ -57,3 +58,16 @@ def email(request):
     #         s.state = 'inactive'
     #     s.save()
     return send_emails(request, qu.name, projs)
+
+@permission_required('questionnaire.management')
+def document(request, proj_id, year):
+    proj = get_object_or_404(Project, account=proj_id)
+    ans = Answer.objects.filter(project=proj, runid=year)
+    ctx = {'project': proj, 'year': year, 'answers': ans}
+    return render_to_response('document.html', ctx, context_instance=RequestContext(request))
+
+@permission_required('questionnaire.management')
+def logos(request):
+    projs = Project.objects.filter(~Q(logo__exact=''))
+    ctx = {'projects': projs}
+    return render_to_response('logos.html', ctx, context_instance=RequestContext(request))

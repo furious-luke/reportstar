@@ -5,7 +5,7 @@ Please complete the g2 annual project reporting questionnaire at:
 
   {{ site }}{{ random }}
 
-by Friday July 12, 2013.
+by Friday July 11, 2014.
 
 It is important that we receive your report by the due date as the
 information is required in order to fulfill government and university

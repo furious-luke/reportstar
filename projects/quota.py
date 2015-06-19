@@ -1,6 +1,8 @@
 import re
 
 def to_tb(val_str):
+    if val_str == 'unlimited':
+        return None
     val = float(val_str[:-2])
     if val_str[-2:] == 'kB':
         return val/1000000000
@@ -10,7 +12,7 @@ def to_tb(val_str):
         return val/1000
 
 def parse_quota(filename):
-    num_re = r'(\d+(?:\.\d+)?(?:kB|MB|GB))'
+    num_re = r'((?:\d+(?:\.\d+)?(?:kB|MB|GB))|(?:unlimited))'
     prog = re.compile(r'\A(.+?)\s+.*?' + num_re + '\s+.*?' + num_re + '.*')
     res = {}
     with open(filename) as file:

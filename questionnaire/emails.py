@@ -47,7 +47,10 @@ def _new_runinfo(project, questionset):
     If a unique subject+runid entry already exists, return that instead..
     That should only occurs with manual database changes
     """
-    nextrun = project.leader.nextrun
+    # Instead of taking the "nextrun" value, just accept the
+    # the current year.
+    # nextrun = project.leader.nextrun
+    nextrun = datetime.now()
     runid = str(nextrun.year)
     entries = list(RunInfo.objects.filter(runid=runid, subject=project.leader, project=project))
     if len(entries)>0:

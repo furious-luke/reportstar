@@ -391,6 +391,9 @@ class Answer(models.Model):
             else:
                 return [self.answer]
 
+    def full_split(self):
+        return [a.split('\n') for a in self.split_answer()]
+
     def check_answer(self):
         "Confirm that the supplied answer matches what we expect"
         return True

@@ -980,4 +980,3 @@ def generate_run(request, questionnaire_id):
     run = RunInfo(subject=su, random=key, runid=key, questionset=qs)
     run.save()
     return HttpResponseRedirect(reverse('questionnaire', kwargs={'runcode': key}))
-

@@ -1,0 +1,18 @@
+{% extends "_base.html" %}
+
+{% block main_content %}
+
+{% for proj in projects %}
+
+<div class="row">
+  <div class="span10 offset1">
+    <p class="lead">{{ proj }}</p>
+    <p>
+      <img src="/supercomputing/forms/project_report/media/{{ proj.logo }}" />
+    </p>
+  </div>
+</div>
+
+{% endfor %}
+
+{% endblock main_content %}
