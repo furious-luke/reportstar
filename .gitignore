@@ -8,5 +8,6 @@ config.py
 build/*
 dist/*
 *.egg-info
-reportstar.db
+db.sqlite3
 credentials.py
+production.py
