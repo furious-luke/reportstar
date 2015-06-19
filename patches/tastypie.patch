@@ -1,0 +1,93 @@
+diff -rupN tastypie/authorization.py tastypie.new/authorization.py
+--- tastypie/authorization.py	2015-03-19 23:57:13.000000000 +1100
++++ tastypie.new/authorization.py	2015-03-19 23:50:33.000000000 +1100
+@@ -172,7 +172,7 @@ class DjangoAuthorization(Authorization)
+         if klass is False:
+             return []
+ 
+-        permission = '%s.add_%s' % (klass._meta.app_label, klass._meta.module_name)
++        permission = '%s.add_%s' % (klass._meta.app_label, klass._meta.model_name)
+ 
+         if not bundle.request.user.has_perm(permission):
+             return []
+@@ -185,7 +185,7 @@ class DjangoAuthorization(Authorization)
+         if klass is False:
+             raise Unauthorized("You are not allowed to access that resource.")
+ 
+-        permission = '%s.add_%s' % (klass._meta.app_label, klass._meta.module_name)
++        permission = '%s.add_%s' % (klass._meta.app_label, klass._meta.model_name)
+ 
+         if not bundle.request.user.has_perm(permission):
+             raise Unauthorized("You are not allowed to access that resource.")
+@@ -198,7 +198,7 @@ class DjangoAuthorization(Authorization)
+         if klass is False:
+             return []
+ 
+-        permission = '%s.change_%s' % (klass._meta.app_label, klass._meta.module_name)
++        permission = '%s.change_%s' % (klass._meta.app_label, klass._meta.model_name)
+ 
+         if not bundle.request.user.has_perm(permission):
+             return []
+@@ -211,7 +211,7 @@ class DjangoAuthorization(Authorization)
+         if klass is False:
+             raise Unauthorized("You are not allowed to access that resource.")
+ 
+-        permission = '%s.change_%s' % (klass._meta.app_label, klass._meta.module_name)
++        permission = '%s.change_%s' % (klass._meta.app_label, klass._meta.model_name)
+ 
+         if not bundle.request.user.has_perm(permission):
+             raise Unauthorized("You are not allowed to access that resource.")
+@@ -224,7 +224,7 @@ class DjangoAuthorization(Authorization)
+         if klass is False:
+             return []
+ 
+-        permission = '%s.delete_%s' % (klass._meta.app_label, klass._meta.module_name)
++        permission = '%s.delete_%s' % (klass._meta.app_label, klass._meta.model_name)
+ 
+         if not bundle.request.user.has_perm(permission):
+             return []
+@@ -237,7 +237,7 @@ class DjangoAuthorization(Authorization)
+         if klass is False:
+             raise Unauthorized("You are not allowed to access that resource.")
+ 
+-        permission = '%s.delete_%s' % (klass._meta.app_label, klass._meta.module_name)
++        permission = '%s.delete_%s' % (klass._meta.app_label, klass._meta.model_name)
+ 
+         if not bundle.request.user.has_perm(permission):
+             raise Unauthorized("You are not allowed to access that resource.")
+diff -rupN tastypie/fields.py tastypie.new/fields.py
+--- tastypie/fields.py	2015-03-19 23:57:13.000000000 +1100
++++ tastypie.new/fields.py	2015-03-20 00:01:06.000000000 +1100
+@@ -2,9 +2,9 @@ from __future__ import unicode_literals
+ import datetime
+ from dateutil.parser import parse
+ from decimal import Decimal
+-import re
++import re, importlib
+ from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+-from django.utils import datetime_safe, importlib
++from django.utils import datetime_safe
+ from django.utils import six
+ from tastypie.bundle import Bundle
+ from tastypie.exceptions import ApiFieldError, NotFound
+diff -rupN tastypie/resources.py tastypie.new/resources.py
+--- tastypie/resources.py	2015-03-19 23:57:13.000000000 +1100
++++ tastypie.new/resources.py	2015-03-19 23:50:33.000000000 +1100
+@@ -2207,7 +2207,7 @@ class BaseModelResource(Resource):
+         self.authorized_delete_detail(self.get_object_list(bundle.request), bundle)
+         bundle.obj.delete()
+ 
+-    @transaction.commit_on_success()
++    @transaction.atomic()
+     def patch_list(self, request, **kwargs):
+         """
+         An ORM-specific implementation of ``patch_list``.
+@@ -2229,7 +2229,7 @@ class BaseModelResource(Resource):
+                 bundle.obj.delete()
+ 
+     def create_identifier(self, obj):
+-        return u"%s.%s.%s" % (obj._meta.app_label, obj._meta.module_name, obj.pk)
++        return u"%s.%s.%s" % (obj._meta.app_label, obj._meta.model_name, obj.pk)
+ 
+     def save(self, bundle, skip_errors=False):
+         self.is_valid(bundle)

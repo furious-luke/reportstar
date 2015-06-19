@@ -1,6 +1,6 @@
+from simplejson import dumps
 from questionnaire import *
 from django.utils.translation import ugettext as _
-from django.utils.simplejson import dumps
 
 @question_proc('choice-yesno','choice-yesnocomment','choice-yesnodontknow')
 def question_yesno(request, question):
