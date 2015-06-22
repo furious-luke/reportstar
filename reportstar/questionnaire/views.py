@@ -22,6 +22,7 @@ from questionnaire.emails import _send_email, send_emails
 from questionnaire.utils import numal_sort, split_numal
 from questionnaire.request_cache import request_cache
 from questionnaire import profiler
+from projects.models import Project
 import logging
 import random
 import md5
@@ -279,8 +280,14 @@ def questionnaire(request, runcode=None, qs=None):
         else:
             return HttpResponseRedirect(reverse("questionnaire",args=[runcode]))
 
-    runinfo = get_runinfo(runcode)
+    import pdb
+    pdb.set_trace()
 
+    runinfo = get_runinfo(runcode)
+    if not runinfo:
+        if runcode[:5] == 'test:' and request.user and request.user.is_staff:
+            _generate_run(int(runcode[5:]), runcode)
+            runinfo = get_runinfo(runcode)
     if not runinfo:
         # transaction.commit()
         return HttpResponseRedirect('/')
@@ -952,8 +959,26 @@ def send_email(request, runinfo_id):
     successful = _send_email(runinfo)
     return r2r("emailsent.html", request, runinfo=runinfo, successful=successful)
 
+def _generate_run(questionnaire_id, key=None):
+    qu = get_object_or_404(Questionnaire, id=questionnaire_id)
+    qs = qu.questionsets()[0]
+    su = Subject.objects.filter(givenname='Anonymous', surname='User')[0:1]
+    if su:
+        su = su[0]
+    else:
+        su = Subject(givenname='Anonymous', surname='User')
+        su.save()
+    proj = Project.objects.get_or_create(account='testing')[0]
+    if key is None:
+        hash = md5.new()
+        hash.update("".join(map(lambda i: chr(random.randint(0, 255)), range(16))))
+        hash.update(settings.SECRET_KEY)
+        key = hash.hexdigest()
+    run = RunInfo(subject=su, project=proj, random=key, runid=key, questionset=qs)
+    run.save()
+    return key
 
-def generate_run(request, questionnaire_id):
+def generate_run(request, questionnaire_id, key=None):
     """
     A view that can generate a RunID instance anonymously,
     and then redirect to the questionnaire itself.
@@ -965,18 +990,5 @@ def generate_run(request, questionnaire_id):
     This can be used with a URL pattern like:
     (r'^take/(?P<questionnaire_id>[0-9]+)/$', 'questionnaire.views.generate_run'),
     """
-    qu = get_object_or_404(Questionnaire, id=questionnaire_id)
-    qs = qu.questionsets()[0]
-    su = Subject.objects.filter(givenname='Anonymous', surname='User')[0:1]
-    if su:
-        su = su[0]
-    else:
-        su = Subject(givenname='Anonymous', surname='User')
-        su.save()
-    hash = md5.new()
-    hash.update("".join(map(lambda i: chr(random.randint(0, 255)), range(16))))
-    hash.update(settings.SECRET_KEY)
-    key = hash.hexdigest()
-    run = RunInfo(subject=su, random=key, runid=key, questionset=qs)
-    run.save()
+    key = _generate_run(questionnaire_id, key)
     return HttpResponseRedirect(reverse('questionnaire', kwargs={'runcode': key}))
