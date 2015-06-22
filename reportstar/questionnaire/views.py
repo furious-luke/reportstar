@@ -276,12 +276,9 @@ def questionnaire(request, runcode=None, qs=None):
     if not runcode:
         runcode = request.GET.get('runcode')
         if not runcode:
-            return HttpResponseRedirect("/")
+            return HttpResponseRedirect(reverse('questionnaire_noargs'))
         else:
             return HttpResponseRedirect(reverse("questionnaire",args=[runcode]))
-
-    import pdb
-    pdb.set_trace()
 
     runinfo = get_runinfo(runcode)
     if not runinfo:
@@ -290,7 +287,7 @@ def questionnaire(request, runcode=None, qs=None):
             runinfo = get_runinfo(runcode)
     if not runinfo:
         # transaction.commit()
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('questionnaire_noargs'))
 
     # let the runinfo have a piggy back ride on the request
     # so we can easily use the runinfo in places like the question processor
