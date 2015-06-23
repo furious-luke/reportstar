@@ -1,24 +1,16 @@
 git+https://github.com/django/django.git@4ee06ec3fc8e94d164afbd2f9c880c60c658a9ac
 docutils
 python-dateutil
-# pillow
-# service_identity
-# django-phonenumber_field
-# googlemaps
-lxml
 django-extra-views
 pytz
 mock
 coverage
 six
 simplejson
-django-rules
-django-recaptcha
 django-tastypie
 djangoajax
 requests
 django-countries
 django-transmeta
 pyparsing==1.5.7
-simplejson
 textile
