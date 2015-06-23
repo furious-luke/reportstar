@@ -1,5 +1,13 @@
 import re
 
+class ParseError(Exception):
+
+    def __init__(self, line):
+        self.line = line
+
+    def __str__(self):
+        return 'Failed to parse quota at line: %s'%self.line
+
 def to_tb(val_str):
     if val_str == 'unlimited':
         return None
@@ -18,6 +26,8 @@ def parse_quota(filename):
     with open(filename) as file:
         for line in file:
             match = prog.match(line)
+            if not match:
+                raise ParseError(line)
             res[match.group(1)] = {'usage': to_tb(match.group(2)), 'quota': to_tb(match.group(3))}
     return res
 
