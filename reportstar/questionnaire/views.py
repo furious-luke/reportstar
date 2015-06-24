@@ -257,7 +257,6 @@ def redirect_to_qs(runinfo):
                 args=[ runinfo.random, runinfo.questionset.sortid ])
     return HttpResponseRedirect(url)
 
-@transaction.atomic
 def questionnaire(request, runcode=None, qs=None):
     """
     Process submitted answers (if present) and redirect to next page
@@ -406,12 +405,12 @@ def questionnaire(request, runcode=None, qs=None):
             errors[question.number] = e
         except Exception:
             logging.exception("Unexpected Exception")
-            transaction.rollback()
+            # transaction.rollback()
             raise
 
     if len(errors) > 0:
         res = show_questionnaire(request, runinfo, errors=errors)
-        transaction.rollback()
+        # transaction.rollback()
         return res
 
     questionset_done.send(sender=None,runinfo=runinfo,questionset=questionset)
