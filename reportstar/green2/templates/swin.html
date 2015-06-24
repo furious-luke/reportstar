@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <!--#set var="siteid" value="113" -->
 <!--#set var="menuid" value="6401" -->
 
@@ -166,7 +168,16 @@ margin-top: 1.285em;
   <!-- Swin Site CSS -->
   <link rel="stylesheet" type="text/css" href="/siteheaders/website.css" />
 
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}" type="text/css"/>
+    <link rel="stylesheet" href="{% static "questionnaire.css" %}"></script>
 
+    <style type="text/css">
+    {% block styleextra %}
+    {% endblock %}
+    </style>
+
+    {% block headextra %}
+    {% endblock %}
 
 
   </head>
@@ -298,6 +309,9 @@ Students</a></li>
 
 
     <div class="post-entry">
+
+      {% block main_content %}{% endblock main_content %}
+      {% block content %}{% endblock content %}
       
       </div>
     <!-- end of .post-entry -->

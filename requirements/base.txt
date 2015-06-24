@@ -14,3 +14,4 @@ django-countries
 django-transmeta
 pyparsing==1.5.7
 textile
+django-markup
