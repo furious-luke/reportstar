@@ -8,8 +8,8 @@ https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/
 """
 
 import os, sys
-sys.path.insert(0, '/var/www/html/reportstar/environ/lib/python2.7/site-packages')
-sys.path.insert(0, '/var/www/html/reportstar/reportstar')
+sys.path.insert(0, '/var/www/html/usersurvey/environ/lib/python2.7/site-packages')
+sys.path.insert(0, '/var/www/html/usersurvey/reportstar')
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "reportstar.settings.production")
 
 from django.core.wsgi import get_wsgi_application
