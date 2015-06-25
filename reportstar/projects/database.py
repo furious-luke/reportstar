@@ -1,6 +1,9 @@
-import MySQLdb
-import MySQLdb.cursors
-from credentials import gstar
+try:
+    import MySQLdb
+    import MySQLdb.cursors
+    from credentials import gstar
+except:
+    print 'Warning: No MySQLdb found'
 
 def connect():
     conn = {

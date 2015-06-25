@@ -40,7 +40,21 @@ def parse_proc_usage(filename):
     entries = parse_moab_file(filename)
     return dict([(a, v['PHDed']) for a, v in entries.iteritems() if a[0] == 'p' and a[4:] in ['_swin', '_astro']])
 
+def parse_simple_proc_usage(filename):
+    entries = {}
+    with open(filename) as inf:
+        for line in inf:
+            words = line.split()
+            if len(words) != 2:
+                continue
+            proj, usage = map(coerce, words)
+            entries[proj] = usage
+    return entries
+
 if __name__ == '__main__':
     import sys
-    entries = parse_proc_usage(sys.argv[1])
+    if len(sys.argv) > 2 and sys.argv[2] == 'simple':
+        entries = parse_simple_proc_usage(sys.argv[1])
+    else:
+        entries = parse_proc_usage(sys.argv[1])
     print entries

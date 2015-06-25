@@ -12,9 +12,9 @@ class Project(models.Model):
     code = models.IntegerField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     members = models.ManyToManyField(Subject, null=True, blank=True, related_name='member_of')
-    cpu_usage = models.DecimalField(decimal_places=4, max_digits=10, default=0, verbose_name=_('CPU hour usage'))
-    disk_quota = models.DecimalField(decimal_places=4, max_digits=10, default=0)
-    disk_usage = models.DecimalField(decimal_places=4, max_digits=10, default=0)
+    cpu_usage = models.DecimalField(decimal_places=4, max_digits=11, default=0, verbose_name=_('CPU hour usage'))
+    disk_quota = models.DecimalField(decimal_places=4, max_digits=11, default=0)
+    disk_usage = models.DecimalField(decimal_places=4, max_digits=11, default=0)
     logo = models.FileField(upload_to=make_filename, blank=True, null=True)
 
     def __unicode__(self):
