@@ -4,7 +4,7 @@
 
 <div class="row">
   <div class="span10 offset1">
-    <h4>Reporting period: July 1st 2013 through to June 30th 2014</h4>
+    <h4>Reporting period: July 1st 2014 through to June 30th 2015</h4>
   </div>
 </div>
 
@@ -42,15 +42,15 @@ and may be used as a factor in future resource allocations.
     <div class="row">
       <div class="span8 offset1">
         <dl class="dl-horizontal">
-          <dt>Project ID</dt><dd>{{ account }}</dd>
-          <dt>Project name</dt><dd>{{ name }}</dd>
-          <dt>FOR code</dt><dd>{{ code }}</dd>
-          <dt>Project leader</dt><dd>{{ leader }}</dd>
-          <dt>Lead institute</dt><dd>{{ institution }}</dd>
-          <dt>Project members</dt><dd>{% for mem in members %}{{ mem.full_name }}<br/>{% endfor %}</dd>
-          <dt>CPU hours used</dt><dd>{{ cpu }}</dd>
-          <dt>Storage used</dt><dd>{{ storage }} TB</dd>
-          <dt>Storage quota</dt><dd>{{ quota }} TB</dd>
+          <dt>Project ID</dt><dd style="margin-top:.8em">{{ account }}</dd>
+          <dt>Project name</dt><dd style="margin-top:1.1em">{{ name }}</dd>
+          <dt>FOR code</dt><dd style="margin-top:1.3em">{{ code }}</dd>
+          <dt>Project leader</dt><dd style="margin-top:1.2em">{{ leader }}</dd>
+          <dt>Lead institute</dt><dd style="margin-top:1.2em">{{ institution }}</dd>
+          <dt>Project members</dt><dd style="margin-top:1.1em">{% for mem in members %}{{ mem.full_name }}<br/>{% endfor %}</dd>
+          <dt>CPU hours used</dt><dd style="margin-top:.8em">{{ cpu }}</dd>
+          <dt>Storage used</dt><dd style="margin-top:1.2em">{{ storage }} TB</dd>
+          <dt>Storage quota</dt><dd style="margin-top:1.2em">{{ quota }} TB</dd>
         </dl>
       </div>
     </div>

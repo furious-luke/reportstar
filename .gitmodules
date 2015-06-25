@@ -1,3 +1,3 @@
 [submodule "reportstar/.sub/django-yabl"]
 	path = reportstar/.sub/django-yabl
-	url = http://github.com/furious-luke/django-yabl
+	url = https://github.com/furious-luke/django-yabl

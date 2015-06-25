@@ -97,7 +97,13 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
+
+ugettext = lambda s: s
+
+LANGUAGES = (
+    ('en', ugettext('English')),
+)
 
 TIME_ZONE = 'UTC'
 
@@ -123,7 +129,3 @@ EMAIL_FILE_PATH = '/tmp/reportstar_mails'
 BOOTSTRAP_VERSION = '2.3.2'
 
 LOGIN_REDIRECT_URL = '/'
-
-LANGUAGES = (
-    ('en', 'English'),
-)

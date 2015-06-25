@@ -5,7 +5,7 @@ Please complete the g2 annual project reporting questionnaire at:
 
   {{ site }}{{ random }}
 
-by Friday July 11, 2014.
+by Friday July 10, 2015.
 
 It is important that we receive your report by the due date as the
 information is required in order to fulfill government and university
@@ -14,7 +14,22 @@ publications, grants and collaborations related to your use of the
 HPC facility. With this in mind the report form has been designed so
 that it should not take up too much of your time.
 
-Please contact Jarrod Hurley <jhurley@swin.edu.au> if you have any
+Please also make an effort to keep your Project Description informative
+and up-to-date, also noting the requirement to provide an associated image.
+This information allows us to document and publicise projects, which is
+necessary to satisfy grant funding bodies.
+
+We would also like to remind project leaders about the requirement to
+provide the facility acknowledgement in all associated publications,
+as described in our usage policies:
+
+   http://www.supercomputing.swin.edu.au/policies/
+
+Failure to adhere to the usage policies or to fulfill requests for project
+information may lead to facility access becoming restricted, although we are
+keen to avoid such a situation arising.
+
+Contact Jarrod Hurley <jhurley@swin.edu.au> if you have any
 questions about the reporting process.
 
 Thanks very much.

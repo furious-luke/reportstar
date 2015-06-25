@@ -61,9 +61,9 @@ div.error {
     margin: 15px 0px 0px 0px;
 }
 
-html, body {
-    background-color: #cdcdcd;
-}
+/* html, body { */
+/*     background-color: #cdcdcd; */
+/* } */
 
 .content {
     background-color: #fff;

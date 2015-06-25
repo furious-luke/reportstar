@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "swin.html" %}
 {% load markup_tags questionnaire i18n %}
 
 {% block headextra %}
@@ -75,7 +75,7 @@
                     </div>
                     {% if forloop.first and proj_desc %}
                     <div class="proj_desc">
-                      <h5>Project description</h5>
+                      <h5>Current project description</h5>
                       <p>{{ proj_desc }}</p>
                     </div>
                     {% endif %}
@@ -88,9 +88,10 @@
                     {% if not forloop.first and upload_logo %}
                     <div class="upload_logo">
                       <p>
-                        Please consider attaching an image from your research that we can
+                        Please attach an image from your research that we can
                         use either in the facility annual report or on the facility website
                         (the caption and image credits can be included in the Q2 textbox above).
+			Please send any additional images to &lt;ahassan@swin.edu.au&gt;.
                         </p>
                       <input type="file" name="logo" />
                     </div>
@@ -108,13 +109,13 @@
     
         
             
-            <div style="text-align: center;" class="well questionset-submit">
+            <div style="text-align: center;" class="questionset-submit">
                 <input class="btn large primary" name="submit" type="submit" value="{% trans "Continue" %}">
                 
             </div>
             
             {% if questionset.prev %}
-                <a class="back-link pull-left" href="javascript:history.back();">{% trans "return to previous page" %}</a>
+                <a class="back-link pull-left" style="margin-top: -37px" href="javascript:history.back();">{% trans "return to previous page" %}</a>
             {% endif %}
     </form>
 

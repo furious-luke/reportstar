@@ -42,7 +42,8 @@ function dep_check(expr) {
 }
 
 function getChecksAttr(obj) {
-    return obj.getAttribute('checks');
+    if( obj.getAttribute !== undefined )
+	return obj.getAttribute('checks');
 }
 
 function statusChanged(obj, res) {
