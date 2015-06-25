@@ -4,17 +4,17 @@
 <script>
 $(document).ready(function(){
   $('#select-all').click(function() {
-    $('.subject-btn').addClass('active');
+    $('.project-btn').addClass('active');
   })
   $('#select-none').click(function() {
-    $('.subject-btn').removeClass('active');
+    $('.project-btn').removeClass('active');
   })
   $('#the-form').submit(function() {
     var all_subjs = [];
-    $('.subject-btn.active').each(function(){
+    $('.project-btn.active').each(function(){
       all_subjs.push($(this).attr('pk'));
     });
-    $('input[name="subjects"]').val(all_subjs.join());
+    $('input[name="projects"]').val(all_subjs.join());
   });
 });
 </script>
@@ -24,7 +24,7 @@ $(document).ready(function(){
 
 <div class="row">
   <div class="span10 offset1">
-    <h4>Select subjects</h4>
+    <h4>Select projects</h4>
   </div>
 </div>
 
@@ -32,15 +32,13 @@ $(document).ready(function(){
   <div class="span7 offset1">
     <button type="button" id="select-all" class="btn btn-block">Select all</button>
     <button type="button" id="select-none" class="btn btn-block">Select none</button>
-    {% for p in subjs %}
-      {% if p.email %}
-        <button type="button" pk="{{ p.pk }}" class="btn btn-block subject-btn" data-toggle="button">{{ p }}</button>
-      {% endif %}
+    {% for p in projs %}
+    <button type="button" pk="{{ p.pk }}" class="btn btn-block project-btn" data-toggle="button">{{ p }}</button>
     {% endfor %}
-    <form action="{% url 'email_go_subjects' %}" method="post" id="the-form">
+    <form action="{% url 'email_go_projects' %}" method="post" id="the-form">
       {% csrf_token %}
       <input type="hidden" name="questionnaire" value="{{ qu.pk }}" />
-      <input type="hidden" name="subjects" value="" />
+      <input type="hidden" name="projects" value="" />
       <div class="form-actions">
         <button type="submit" class="btn btn-primary">Submit</button>
       </div>

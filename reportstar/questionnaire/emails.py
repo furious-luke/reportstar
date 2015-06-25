@@ -40,36 +40,31 @@ def _new_random(subject):
     return "%dz%s" % (subject.id, md5(subject.surname + str(subject.nextrun) + hex(random.randint(1,999999))).hexdigest()[:6])
 
 
-def _new_runinfo(project, questionset):
+def _new_runinfo(project, questionset, subject=None):
     """
     Create a new RunInfo entry with a random code
 
     If a unique subject+runid entry already exists, return that instead..
     That should only occurs with manual database changes
     """
+    subject = project.leader if project else subject
     # Instead of taking the "nextrun" value, just accept the
     # the current year.
-    # nextrun = project.leader.nextrun
     nextrun = datetime.now()
     runid = str(nextrun.year)
-    entries = list(RunInfo.objects.filter(runid=runid, subject=project.leader, project=project))
+    entries = list(RunInfo.objects.filter(runid=runid, subject=subject, project=project))
     if len(entries)>0:
         r = entries[0]
     else:
         r = RunInfo()
-        r.random = _new_random(project.leader)
-        r.subject = project.leader
+        r.random = _new_random(subject)
+        r.subject = subject
         r.project = project;
         r.runid = runid
         r.emailcount = 0
         r.created = datetime.now()
     r.questionset = questionset
     r.save()
-    # if nextrun.month == 2 and nextrun.day == 29: # the only exception?
-    #     subject.nextrun = datetime(nextrun.year + 1, 2, 28)
-    # else:
-    #     subject.nextrun = datetime(nextrun.year + 1, nextrun.month, nextrun.day)
-    # subject.save()
     return r
 
 def _send_email(runinfo):
@@ -86,7 +81,7 @@ def _send_email(runinfo):
     c['random'] = runinfo.random
     c['runid'] = runinfo.runid
     c['created'] = runinfo.created
-    c['account'] = runinfo.project.account
+    c['account'] = runinfo.project.account if runinfo.project else None
     c['site'] = getattr(settings, 'QUESTIONNAIRE_URL', '(settings.QUESTIONNAIRE_URL not set)')
     email = tmpl.render(c)
     emailFrom = settings.QUESTIONNAIRE_EMAIL_FROM
@@ -120,7 +115,7 @@ def _send_email(runinfo):
     return False
 
 @permission_required("questionnaire.management")
-def send_emails(request=None, qname=None, projects=[]):
+def send_project_emails(request=None, qname=None, projects=[]):
     """
     1. Create a runinfo entry for each subject who is due and has state 'active'
     2. Send an email for each runinfo entry whose subject receives email,
@@ -148,6 +143,53 @@ def send_emails(request=None, qname=None, projects=[]):
     for p in projects:
         if p.leader:
             r = _new_runinfo(p, questionset)
+    runinfos = RunInfo.objects.filter(subject__formtype='email', questionset__questionnaire=questionnaire)
+    WEEKAGO = time.time() - (60 * 60 * 24 * 7) # one week ago
+    outlog = []
+    for r in runinfos:
+        if r.runid.startswith('test:'):
+            continue
+        if r.emailcount == -1:
+            continue
+        if r.emailcount == 0 or time.mktime(r.emailsent.timetuple()) < WEEKAGO:
+            try:
+                if _send_email(r):
+                    outlog.append(u"[%s] %s, %s: OK" % (r.runid, r.subject.surname, r.subject.givenname))
+                else:
+                    outlog.append(u"[%s] %s, %s: %s" % (r.runid, r.subject.surname, r.subject.givenname, r.lastemailerror))
+            except Exception, e:
+                outlog.append("Exception: [%s] %s: %s" % (r.runid, r.subject.surname, str(e)))
+    if request:
+        return HttpResponse("Sent Questionnaire Emails:\n  "
+            +"\n  ".join(outlog), content_type="text/plain")
+    return "\n".join(outlog)
+
+@permission_required("questionnaire.management")
+def send_subject_emails(request=None, qname=None, subjects=[]):
+    """
+    1. Create a runinfo entry for each subject who is due and has state 'active'
+    2. Send an email for each runinfo entry whose subject receives email,
+       providing that the last sent email was sent more than a week ago.
+
+    This can be called either by "./manage.py questionnaire_emails" (without
+    request) or through the web, if settings.EMAILCODE is set and matches.
+    """
+    if not qname:
+        qname = getattr(settings, 'QUESTIONNAIRE_DEFAULT', None)
+    if not qname:
+        raise Exception("QUESTIONNAIRE_DEFAULT not in settings")
+    questionnaire = Questionnaire.objects.get(name=qname)
+    questionset = QuestionSet.objects.filter(questionnaire__name=qname).order_by('sortid')
+    if not questionset:
+        raise Exception("No questionsets for questionnaire '%s' (in settings.py)" % qname)
+        return
+    questionset = questionset[0]
+
+    # viablesubjects = Subject.objects.filter(nextrun__lte = datetime.now(), state='active')
+    # viablesubjects = [p.subject for p in projects if p.subject]
+    # for s in viablesubjects:
+    for subj in subjects:
+        r = _new_runinfo(None, questionset, subject=subj)
     runinfos = RunInfo.objects.filter(subject__formtype='email', questionset__questionnaire=questionnaire)
     WEEKAGO = time.time() - (60 * 60 * 24 * 7) # one week ago
     outlog = []
