@@ -18,7 +18,7 @@ from questionnaire import AnswerException
 from questionnaire import Processors
 from questionnaire.models import *
 from questionnaire.parsers import *
-from questionnaire.emails import _send_email, send_emails
+from questionnaire.emails import _send_email
 from questionnaire.utils import numal_sort, split_numal
 from questionnaire.request_cache import request_cache
 from questionnaire import profiler

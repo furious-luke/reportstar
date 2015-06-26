@@ -1,4 +1,4 @@
-g2 (gSTAR/swinSTAR) annual project report for {{ account }}
+{% if account %}g2 (gSTAR/swinSTAR) annual project report for {{ account }}
 Dear {% if title %}{{ title }}{% endif %} {{ givenname }} {{ surname }},
 
 Please complete the g2 annual project reporting questionnaire at:
@@ -21,3 +21,16 @@ Thanks very much.
 
 All the best,
 The Swinburne HPC Team
+{% else %}User survey!
+Dear {% if title %}{{ title }}{% endif %} {{ givenname }} {{ surname }},
+
+  {{ site }}{{ random }}
+
+Please contact Jarrod Hurley <jhurley@swin.edu.au> if you have any
+questions about the reporting process.
+
+Thanks very much.
+
+All the best,
+The Swinburne HPC Team
+{% endif %}

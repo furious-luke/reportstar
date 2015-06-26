@@ -4,7 +4,11 @@
 
 <div class="row">
   <div class="span10 offset1">
-    <h4>Reporting period: July 1st 2013 through to June 30th 2014</h4>
+    {% if account %}
+      <h4>Reporting period: July 1st 2013 through to June 30th 2014</h4>
+    {% else %}
+      <h4>User Satisfaction Survey</h4>
+    {% endif %}
   </div>
 </div>
 
@@ -12,6 +16,7 @@
   <div class="span10 offset1"><hr/></div>
 </div>
 
+{% if account %}
 <div class="row">
   <div class="span1 offset1"><em>Notes:</em></div>
   <div class="span9">
@@ -29,11 +34,13 @@ and may be used as a factor in future resource allocations.
     </em>
   </div>
 </div>
+{% endif %}
 
 <div class="row">
   <div class="span10 offset1"><hr/></div>
 </div>
 
+{% if account %}
 <div class="row">
   <div class="span10 offset1">
     <p class="lead">Provided is a summary of your project.
@@ -56,6 +63,7 @@ and may be used as a factor in future resource allocations.
     </div>
   </div>
 </div>
+{% endif %}
 
 <div class="row"><div class="span12">&nbsp;</div></div>
 

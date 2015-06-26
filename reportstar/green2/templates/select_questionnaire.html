@@ -11,7 +11,11 @@
 <div class="row">
   <div class="span4 offset1">
     {% for q in qs %}
-    <a href="{% url 'email_subj' %}?q={{ q.pk }}" class="btn btn-large btn-block">{{ q }}</a>
+      {% if q.name == "Users Survey" %}
+        <a href="{% url 'email_subj' %}?q={{ q.pk }}" class="btn btn-large btn-block">{{ q }}</a>
+      {% else %}
+        <a href="{% url 'email_proj' %}?q={{ q.pk }}" class="btn btn-large btn-block">{{ q }}</a>
+      {% endif %}
     {% endfor %}
   </div>
 </div>
