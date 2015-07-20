@@ -36,13 +36,15 @@ and may be used as a factor in future resource allocations.
 </div>
 {% endif %}
 
+{% comment %}
 <div class="row">
   <div class="span10 offset1"><hr/></div>
 </div>
+{% endcomment %}
 
-{% if account %}
 <div class="row">
   <div class="span10 offset1">
+{% if account %}
     <p class="lead">Provided is a summary of your project.
     Please complete the questionnaire by clicking the button
     below.</p>
@@ -61,9 +63,33 @@ and may be used as a factor in future resource allocations.
         </dl>
       </div>
     </div>
+{% else %}
+    <p>
+      Welcome to the g2 (gSTAR/swinSTAR) Annual User Feedback Opportunity!
+    </p>
+    <p>
+      To help us to continue to refine and improve the HPC services that we offer
+      we are seeking feedback on your experience in using the g2 facility at Swinburne
+      (comprising the gSTAR and swinSTAR compute nodes, job queue, lustre storage, etc.).
+    </p>
+    <p>
+      We estimate that the survey will take less than 10 minutes of your time to complete.
+    </p>
+    <p>
+      Please base your answers on your usage experience over the past 12 months.
+    </p>
+    <p>
+      At the end of the survey you have the option of providing your g2 username,
+      thus you may choose to be anonymous or not. Please bear in mind that by
+      providing your username it will allow us to follow-up on any specific queries you
+      may have and thus directly improve your usage experience (which is the goal).
+    </p>
+    <p>
+      Thanks for your help.
+    </p>
+{% endif %}
   </div>
 </div>
-{% endif %}
 
 <div class="row"><div class="span12">&nbsp;</div></div>
 

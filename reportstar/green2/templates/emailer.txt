@@ -36,16 +36,30 @@ Thanks very much.
 
 All the best,
 The Swinburne HPC Team
-{% else %}User survey!
-Dear {% if title %}{{ title }}{% endif %} {{ givenname }} {{ surname }},
+
+{% else %}g2 (gSTAR/swinSTAR) Annual User Feedback Opportunity - Please help us by completing the linked short survey by Friday July 10th
+Dear g2 account holder,
+
+To help us to continue to refine and improve the HPC services that we offer
+we are seeking feedback on your experience in using the g2 facility at Swinburne
+(comprising the gSTAR and swinSTAR compute nodes). Please take the time
+to complete the short survey form (<10 mins) prepared for you at:
 
   {{ site }}{{ random }}
 
-Please contact Jarrod Hurley <jhurley@swin.edu.au> if you have any
-questions about the reporting process.
+noting that we are focussed on usage over the past 12 months.
+Areas covered include hardware, software, support and training.
 
-Thanks very much.
+At the end of the survey you have the option of providing your g2 username,
+thus you may choose to be anonymous or not. Please bear in mind that by
+providing your username it will allow us to follow-up on any specific queries you
+may have and thus directly improve your usage experience (which is the goal).
 
-All the best,
-The Swinburne HPC Team
+Completed responses by Friday July 10th will be much appreciated.
+
+If you have not used g2 in the past 12 months or have only had your account for
+a short time (a few months or less) please ignore this request.
+
+Cheers,
+Jarrod Hurley (on behalf of the g2 support team)
 {% endif %}
