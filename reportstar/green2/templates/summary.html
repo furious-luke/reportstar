@@ -1,0 +1,35 @@
+{% extends "_base.html" %}
+
+{% block main_content %}
+
+<div class="row">
+  <div class="span10 offset1">
+    <h4>User Survey {{ year }}</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="span10 offset1"><hr/></div>
+</div>
+
+{% for ans in answers %}
+  <div class="row">
+    <div class="span10 offset1">
+      <p class="lead">{{ ans.0.text }}</p>
+      <table class="table">
+        {% for ch, val in ans.1.iteritems %}
+          <tr>
+            {% if ch.text %}
+              <td>{{ ch.sortid }}. {{ ch.text }}</td>
+            {% else %}
+              <td>{{ ch }}</td>
+            {% endif %}
+            <td><b>{{ val }}</b></td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endfor %}
+
+{% endblock main_content %}

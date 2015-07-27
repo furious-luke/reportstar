@@ -20,6 +20,7 @@ urlpatterns = [
     url(r'^emailer/go_projects/$', 'green2.views.email_projects', name="email_go_projects"),
     url(r'^emailer/go_subjects/$', 'green2.views.email_subjects', name="email_go_subjects"),
     url(r'^document/(?P<proj_id>[a-zA-Z0-9_]+)/(?P<year>[0-9]+)/$', 'green2.views.document', name='document'),
+    url(r'^summary/(?P<year>[0-9]+)/$', 'green2.views.summary', name='summary'),
     url(r'^logos$', 'green2.views.logos', name='logos'),
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
     url(r'^admin/', include(admin.site.urls)),
