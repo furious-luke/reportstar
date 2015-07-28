@@ -87,6 +87,7 @@ def summary(request, year):
     questionnaire = get_object_or_404(Questionnaire, name='Users Survey')
     questions = Question.objects.filter(questionset__questionnaire=questionnaire)
     answers = []
+    n_subjects = 0
     for qst in questions:
         if qst.type in ['open-textfield', 'open']:
             continue
@@ -127,13 +128,14 @@ def summary(request, year):
         #     else:
         #         agg = '%.02f'%agg
         cnt = sum(choices.values(), 0)
+        n_subjects = max(n_subjects, cnt)
         for ch, val in choices.iteritems():
             if cnt:
                 choices[ch] = '%.02f%%'%(100.0*choices[ch]/cnt)
             else:
                 choices[ch] = '0.00%'
         answers.append((qst, choices))
-    ctx = {'year': year, 'answers': answers}
+    ctx = {'year': year, 'answers': answers, 'n_subjects': n_subjects}
     return render_to_response('summary.html', ctx, context_instance=RequestContext(request))
 
 @permission_required('questionnaire.management')
